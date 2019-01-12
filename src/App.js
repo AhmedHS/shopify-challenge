@@ -9,22 +9,47 @@ class App extends Component {
     this.state = {
       search: "",
     };
+
+    this.searchBar = React.createRef();
   }
   updateSearch = (event) => {
     this.setState({
       search: event.target.value,
     })
   }
+  clearSearch = () => {
+    this.setState({
+      search: ""
+    })
+    this.searchBar.current.value = "";
+  }
   submitSearch = () => {
     this.props.submitSearch(this.state.search);
   }
+  readHTML = (input) => {
+    let text = document.createElement("textarea");
+    text.innerHTML = input;
+    return text.value;
+  }
   render() {
-    console.log(this.props.results);
     return (
       <div className="App">
         <h1>Toronto Waste Lookup</h1>
-        <input type="text" onKeyUp={this.updateSearch}/>
+        <input type="text" ref={this.searchBar} onKeyUp={this.updateSearch}/>
+        <input type="button" value="X" onClick={this.clearSearch}/>
         <input type="button" value="Search" onClick={this.submitSearch}/>
+        <table>
+          <tbody>
+          {
+            this.props.results.map((result, x) =>
+              <tr key={x}>
+                <td>{result.title}</td>
+                <td dangerouslySetInnerHTML={{__html: this.readHTML(result.body)}}></td>
+              </tr>
+            )
+          }
+          </tbody>
+        </table>
       </div>
     );
   }

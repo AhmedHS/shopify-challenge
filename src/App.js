@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { testAction } from './actions';
+import { submitSearch } from './actions';
 import './App.css';
 
 class App extends Component {
@@ -16,24 +16,25 @@ class App extends Component {
     })
   }
   submitSearch = () => {
-    this.props.testAction();
+    this.props.submitSearch(this.state.search);
   }
   render() {
+    console.log(this.props.results);
     return (
       <div className="App">
         <h1>Toronto Waste Lookup</h1>
-        <input type="text" onKeyPress={this.updateSearch}/>
+        <input type="text" onKeyUp={this.updateSearch}/>
         <input type="button" value="Search" onClick={this.submitSearch}/>
       </div>
     );
   }
 }
-const mapStateToProps = (state) => {
+const mapStateToProps = (rState) => {
   return {
-
+    results: rState.state.results,
   }
 }
 const mapDispatchToProps = {
-  testAction,
+  submitSearch,
 }
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -14,6 +14,8 @@ const reducers = (state = defaultState, action) => {
             return {
                 ...state, results: newResults
             }
+        case 'CLEAR':
+            return{...state, results: []}
         case 'FAVOURITE':
             let favQuery;
             state.favourites.forEach((result, index) => {

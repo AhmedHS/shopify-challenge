@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { submitSearch, favourite } from './actions';
+import { submitSearch, clearSearch, favourite } from './actions';
+import { FaSearch, FaTimesCircle, FaStar } from 'react-icons/fa';
 import './App.css';
 
 class App extends Component {
@@ -13,7 +14,7 @@ class App extends Component {
     this.searchBar = React.createRef();
   }
   updateSearch = (event) => {
-    if(event.keyCode == 13)
+    if (event.keyCode == 13)
       this.props.submitSearch(this.state.search);
     this.setState({
       search: event.target.value,
@@ -24,6 +25,7 @@ class App extends Component {
       search: ""
     })
     this.searchBar.current.value = "";
+    this.props.clearSearch();
   }
   submitSearch = () => {
     this.props.submitSearch(this.state.search);
@@ -50,20 +52,20 @@ class App extends Component {
 
     return (
       <div className="App">
-        <h1>Toronto Waste Lookup</h1>
-        <input type="text" ref={this.searchBar} onKeyUp={this.updateSearch} />
-        {this.state.search.length > 0 ? <input type="button" value="X" onClick={this.clearSearch} /> : ''}
-        <input type="button" value="Search" onClick={this.submitSearch} />
-        <table>
+        <h1 id="header">Toronto Waste Lookup</h1>
+        <input id="searchBar" type="text" ref={this.searchBar} onKeyUp={this.updateSearch} />
+        {this.state.search.length > 0 ? <button id="clearButton" className="button" type="button" onClick={this.clearSearch}><FaTimesCircle /></button> : ''}
+        <button id="searchButton" className="button" type="button" onClick={this.submitSearch}><FaSearch /></button>
+        <table className="tables">
           <tbody>
             {
               this.props.results.map((result, x) =>
                 <tr key={x}>
                   <td>
                     {this.favourited(result.title) ?
-                      <input type="button" value="X" onClick={() => { this.favouriteItem(result.title) }} />
+                      <button className="favourited button" type="button" onClick={() => { this.favouriteItem(result.title) }}><FaStar /></button>
                       :
-                      <input type="button" value="F" onClick={() => { this.favouriteItem(result.title) }} />
+                      <button className="unfavourited button" type="button" onClick={() => { this.favouriteItem(result.title) }}><FaStar /></button>
                     }
                   </td>
                   <td>{result.title}</td>
@@ -75,17 +77,17 @@ class App extends Component {
         </table>
         {this.props.favourites.length > 0 ?
           <div>
-            <h2>Favourites</h2>
-            <table>
+            <h2 id="favHeader">Favourites</h2>
+            <table className="tables">
               <tbody>
                 {
                   this.props.favourites.map((result, x) =>
                     <tr key={x}>
                       <td>
                         {this.favourited(result.title) ?
-                          <input type="button" value="X" onClick={() => { this.favouriteItem(result.title) }} />
+                          <button className="favourited button" type="button" onClick={() => { this.favouriteItem(result.title) }}><FaStar /></button>
                           :
-                          <input type="button" value="F" onClick={() => { this.favouriteItem(result.title) }} />
+                          <button className="unfavourited button" type="button" onClick={() => { this.favouriteItem(result.title) }}><FaStar /></button>
                         }
                       </td>
                       <td>{result.title}</td>
@@ -110,6 +112,7 @@ const mapStateToProps = (rState) => {
 }
 const mapDispatchToProps = {
   submitSearch,
+  clearSearch,
   favourite
 }
 export default connect(mapStateToProps, mapDispatchToProps)(App);

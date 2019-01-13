@@ -13,6 +13,7 @@ class App extends Component {
 
     this.searchBar = React.createRef();
   }
+  // Used to keep track of user search queries
   updateSearch = (event) => {
     if (event.keyCode == 13)
       this.props.submitSearch(this.state.search);
@@ -20,6 +21,7 @@ class App extends Component {
       search: event.target.value,
     })
   }
+  // Clears the search bar and results
   clearSearch = () => {
     this.setState({
       search: ""
@@ -27,12 +29,15 @@ class App extends Component {
     this.searchBar.current.value = "";
     this.props.clearSearch();
   }
+  //Triggered when the search bar is clicked
   submitSearch = () => {
     this.props.submitSearch(this.state.search);
   }
+  // Dispatches an action to register a favourited item
   favouriteItem = (input) => {
     this.props.favourite(input);
   }
+  //Checks to see if an item is favourited
   favourited = (title) => {
     let query = this.props.favourites.filter((result) => {
       return result.title === title
@@ -48,8 +53,6 @@ class App extends Component {
     return text.value;
   }
   render() {
-    console.log(this.props.favourites)
-
     return (
       <div className="App">
         <h1 id="header">Toronto Waste Lookup</h1>

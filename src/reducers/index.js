@@ -18,17 +18,17 @@ const reducers = (state = defaultState, action) => {
             return{...state, results: []}
         case 'FAVOURITE':
             let favQuery;
-            state.favourites.forEach((result, index) => {
+            state.favourites.forEach((result, index) => { //Searches to see if the item is already favourited
                 if(result.title == action.payload)
                     favQuery = index;
             })
-            if(favQuery != undefined){
+            if(favQuery != undefined){ //If so, removes it from the favourite list
                 let newFav = [...state.favourites]
                 newFav.splice(favQuery, 1)
                 return {
                     ...state, favourites: newFav
                 }}
-            else{
+            else{ //Adding an item tot he favourite list
                 let query = data.filter((result) => {
                     if(result.title === action.payload)
                         return result;

@@ -13,6 +13,8 @@ class App extends Component {
     this.searchBar = React.createRef();
   }
   updateSearch = (event) => {
+    if(event.keyCode == 13)
+      this.props.submitSearch(this.state.search);
     this.setState({
       search: event.target.value,
     })
@@ -26,8 +28,17 @@ class App extends Component {
   submitSearch = () => {
     this.props.submitSearch(this.state.search);
   }
-  favouriteItem = (input) =>{
+  favouriteItem = (input) => {
     this.props.favourite(input);
+  }
+  favourited = (title) => {
+    let query = this.props.favourites.filter((result) => {
+      return result.title === title
+    })
+    if (query.length > 0)
+      return true;
+    else
+      return false;
   }
   readHTML = (input) => {
     let text = document.createElement("textarea");
@@ -35,6 +46,8 @@ class App extends Component {
     return text.value;
   }
   render() {
+    console.log(this.props.favourites)
+
     return (
       <div className="App">
         <h1>Toronto Waste Lookup</h1>
@@ -47,7 +60,11 @@ class App extends Component {
               this.props.results.map((result, x) =>
                 <tr key={x}>
                   <td>
-                    <input type="button" value="F" onClick={()=>{this.favouriteItem(result.title)}} />
+                    {this.favourited(result.title) ?
+                      <input type="button" value="X" onClick={() => { this.favouriteItem(result.title) }} />
+                      :
+                      <input type="button" value="F" onClick={() => { this.favouriteItem(result.title) }} />
+                    }
                   </td>
                   <td>{result.title}</td>
                   <td dangerouslySetInnerHTML={{ __html: this.readHTML(result.body) }}></td>
@@ -64,7 +81,13 @@ class App extends Component {
                 {
                   this.props.favourites.map((result, x) =>
                     <tr key={x}>
-                      <td><input type="button" value="F" onClick={()=>{this.favouriteItem(result.title)}} /></td>
+                      <td>
+                        {this.favourited(result.title) ?
+                          <input type="button" value="X" onClick={() => { this.favouriteItem(result.title) }} />
+                          :
+                          <input type="button" value="F" onClick={() => { this.favouriteItem(result.title) }} />
+                        }
+                      </td>
                       <td>{result.title}</td>
                       <td dangerouslySetInnerHTML={{ __html: this.readHTML(result.body) }}></td>
                     </tr>

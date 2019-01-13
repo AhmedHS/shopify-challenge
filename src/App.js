@@ -71,7 +71,7 @@ class App extends Component {
                       <button className="unfavourited button" type="button" onClick={() => { this.favouriteItem(result.title) }}><FaStar /></button>
                     }
                   </td>
-                  <td>{result.title}</td>
+                  <td className="resultTitle">{result.title}</td>
                   <td dangerouslySetInnerHTML={{ __html: this.readHTML(result.body) }}></td>
                 </tr>
               )
@@ -93,7 +93,7 @@ class App extends Component {
                           <button className="unfavourited button" type="button" onClick={() => { this.favouriteItem(result.title) }}><FaStar /></button>
                         }
                       </td>
-                      <td>{result.title}</td>
+                      <td className="resultTitle">{result.title}</td>
                       <td dangerouslySetInnerHTML={{ __html: this.readHTML(result.body) }}></td>
                     </tr>
                   )

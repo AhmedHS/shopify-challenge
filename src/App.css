@@ -19,6 +19,9 @@
   text-align: left;
   width: 87%;;
 }
+.resultTitle {
+  width: 25%;
+}
 
 .favourited {
   font-size: 20px;
